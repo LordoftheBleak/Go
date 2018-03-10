@@ -9,11 +9,15 @@
 #pragma push_macro("STRUCT")
 #pragma push_macro("VALUE")
 #pragma push_macro("FUNCTION")
+#pragma push_macro("UTILITY")
+#pragma push_macro("MAKE_HANDLE")
 
 #define ALIAS(...)
 #define TYPE(...)
 #define STRUCT(...)
 #define FUNCTION(...)
+#define UTILITY(...)
+#define MAKE_HANDLE(...)
 
 //New names for constants to avoid macro conflicts
 #define VALUE(type, identifier, value) constexpr auto& detail##identifier = identifier;
@@ -55,10 +59,12 @@ namespace bleaklib
 #define STRUCT(identifier, body, alias) static_assert(sizeof(bleaklib::windows::identifier) == sizeof(identifier) && alignof(bleaklib::windows::identifier) == alignof(identifier), "Size or alignment of "#identifier" is incorrect.");
 #define ALIAS(identifier, alias) static_assert(std::is_same_v<bleaklib::windows::alias, alias>, "Alias "#alias" is incorrect.");
 #define TYPE(type, alias) static_assert(std::is_same_v<alias, type>, "Alias "#alias" is incorrect.");
+#define MAKE_HANDLE(identifier) STRUCT(identifier##__, , )
 #include "WindowsHiderItems.h"
 #define STRUCT(...)
 #define ALIAS(...)
 #define TYPE(...)
+#define MAKE_HANDLE(...)
 
 //Test that constants are identical
 #define VALUE(type, identifier, value) , bleaklib::windows::detail::SpecialAssert(bleaklib::windows::detail::detail##identifier, identifier)
@@ -147,4 +153,6 @@ namespace bleaklib
 #pragma pop_macro("STRUCT")
 #pragma pop_macro("VALUE")
 #pragma pop_macro("FUNCTION")
+#pragma pop_macro("UTILITY")
+#pragma pop_macro("MAKE_HANDLE")
 #pragma warning(pop)

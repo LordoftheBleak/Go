@@ -9,6 +9,8 @@
 #pragma push_macro("STRUCT")
 #pragma push_macro("VALUE")
 #pragma push_macro("FUNCTION")
+#pragma push_macro("UTILITY")
+#pragma push_macro("MAKE_HANDLE")
 
 namespace bleaklib
 {
@@ -18,6 +20,13 @@ namespace bleaklib
 #define TYPE(...)
 #define VALUE(...)
 #define FUNCTION(...)
+#define UTILITY(...)
+#define STRUCT(...)
+
+		//Handle types
+#define MAKE_HANDLE(identifier) typedef struct identifier##__ { int unused; } *identifier;
+#include "WindowsHiderItems.h"
+#define MAKE_HANDLE(...)
 
 		//Type aliases for struct names
 #define STRUCT(identifier, body, alias) struct identifier; typedef identifier alias, *P##alias, *LP##alias; typedef const identifier C##alias, *PC##alias, *LPC##alias;
@@ -27,9 +36,11 @@ namespace bleaklib
 		//Type aliases
 #define ALIAS(identifier, alias) typedef identifier alias, *P##alias, *LP##alias; typedef const identifier C##alias, *PC##alias, *LPC##alias;
 #define TYPE(type, alias) using alias = type;
+#define UTILITY(...) __VA_ARGS__
 #include "WindowsHiderItems.h"
 #define ALIAS(...)
 #define TYPE(...)
+#define UTILITY(...)
 
 		//Struct definitions
 #define STRUCT(identifier, body, alias) struct identifier body;
@@ -88,4 +99,6 @@ namespace bleaklib
 #pragma pop_macro("STRUCT")
 #pragma pop_macro("VALUE")
 #pragma pop_macro("FUNCTION")
+#pragma pop_macro("UTILITY")
+#pragma pop_macro("MAKE_HANDLE")
 #pragma warning(pop)
